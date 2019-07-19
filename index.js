@@ -6,21 +6,22 @@ var mainCss;
 
 const server = http.createServer((req, res)=>{
 
-    fs.readFile('./public/index.html', function(err, pizdec){
+    fs.readFile('./public/index.html','utf-8', function(err, pizdec){
         if(err) throw err;
         htmlFile = pizdec;
     });
-    fs.readFile('./public/main.css', function(err, neponyatno){
+    fs.readFile('./public/main.css','utf-8', function(err, neponyatno){
         mainCss = neponyatno;
     });
     switch(req.url){
-        case 'main.css':
+        case '/main.css':
                 res.writeHead(200, {"Content-Type":"text/css"});
                 res.write(mainCss);
                 break;
         default:
-            res.write(htmlFile);
             res.writeHead(200,{"Content-Type":"text/html"});
+            res.write(htmlFile);
+            
             
     }
     res.end();  
