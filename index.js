@@ -3,6 +3,9 @@ const fs = require('fs');
 // const path = require('path');
 var htmlFile;
 var mainCss;
+var page2;
+var page3;
+var page404;
 
 const server = http.createServer((req, res)=>{
 
@@ -10,21 +13,46 @@ const server = http.createServer((req, res)=>{
         if(err) throw err;
         htmlFile = pizdec;
     });
+    fs.readFile('./public/page3.html','utf-8', function(err, data){
+        page3 = data;
+    });
+    fs.readFile('./public/page2.html','utf-8', function(err, data){
+        if(err) throw err;
+        page2 = data;
+    });
     fs.readFile('./public/main.css','utf-8', function(err, neponyatno){
         mainCss = neponyatno;
     });
+    fs.readFile('./public/404.html','utf-8', function(err, data){
+        page404 = data;
+    });
+    console.log('check does work two fs.readfile');
     switch(req.url){
         case '/main.css':
                 res.writeHead(200, {"Content-Type":"text/css"});
-                res.write(mainCss);
+                res.end(mainCss);
                 break;
+        case '/page2.html':
+            res.writeHead(200, {"Content-Type":"text/html"});
+            res.end(page2);  
+        case '/':
+                res.writeHead(200, {"Content-Type":"text/html"});
+                res.end(htmlFile);
+        case '/page3.html':
+                res.writeHead(200, {"Content-Type":"text/html"});
+                res.end(page3);
+        case '/index.html':
+                res.writeHead(200, {"Content-Type":"text/html"});
+                res.end(htmlFile);                
         default:
-            res.writeHead(200,{"Content-Type":"text/html"});
-            res.write(htmlFile);
-            
-            
+            res.writeHead(200, {"Content-Type":"text/html"});
+            res.end(page404);
+                        
     }
     res.end();  
+
+
+
 // bilo na uroke    
     
     //     res.writeHead(200, {"Content-Type":"text/html"})
